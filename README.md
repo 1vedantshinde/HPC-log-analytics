@@ -3,6 +3,10 @@
 End-to-end analytics pipeline for the **Thunderbird** HPC supercomputer log dataset.  
 Ingests 211 M log lines via **PySpark → HDFS → MongoDB** and serves an interactive **Streamlit** dashboard.
 
+## Note
+
+Running this project end to end requires the Thunderbird HPC log dataset, a separately running MongoDB Docker container, and a configured HDFS and Spark environment. Processing over 211 million log lines involves significant data processing, storage, and setup time. The dashboard can be run independently only if the required MongoDB collections and supporting data have already been populated (the steps for which will be provided later).
+
 ---
 
 ## Project Structure
