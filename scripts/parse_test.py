@@ -1,6 +1,6 @@
 import sys, time
 from pyspark.sql import SparkSession, functions as F
-from masking import mask
+from utils.masking import mask
 
 path = sys.argv[1] if len(sys.argv) > 1 else "hdfs://localhost:9000/raw/thunderbird/2006-W28/part-0.log"
 spark = (SparkSession.builder.master("local[8]").appName("tbird-parse-test")

@@ -6,7 +6,7 @@ import plotly.express as px
 import streamlit as st
 from pymongo import MongoClient
 
-import template_glossary as tg
+import glossary.template_glossary as tg
 
 st.set_page_config(page_title="Template decoder", layout="wide")
 

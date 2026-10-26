@@ -1,5 +1,5 @@
 import shutil, sys
-path = "research_analyses.py"
+path = "pipeline/research_analyses.py"
 s = open(path).read()
 edits = [
  ("import os, sys, time", "import os, sys, time\nimport pandas as pd"),

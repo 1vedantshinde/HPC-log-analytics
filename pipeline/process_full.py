@@ -1,6 +1,6 @@
 import os, sys, json, time
 from pyspark.sql import SparkSession, functions as F
-from masking import mask
+from utils.masking import mask
 
 IN  = sys.argv[1] if len(sys.argv) > 1 else "hdfs://localhost:9000/raw/thunderbird/*/part-0.log"
 OUT = sys.argv[2] if len(sys.argv) > 2 else "hdfs://localhost:9000/processed/thunderbird"

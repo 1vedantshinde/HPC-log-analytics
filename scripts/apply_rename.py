@@ -1,5 +1,5 @@
 import os, sys
-old, new = "pages/1_Research_Findings.py", "pages/2_Behavior_Analysis.py"
+old, new = "app/pages/1_Research_Findings.py", "app/pages/2_Behavior_Analysis.py"
 if not os.path.exists(old):
     sys.exit(old + " not found. Nothing changed.")
 if os.path.exists(new):

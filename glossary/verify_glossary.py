@@ -1,6 +1,6 @@
 from collections import defaultdict
 from pymongo import MongoClient
-import template_glossary as tg
+import glossary.template_glossary as tg
 
 ok = True
 
@@ -13,7 +13,7 @@ def check(name, cond, extra=""):
 
 # 1. masking rules identical to your masking.py
 try:
-    import masking
+    import utils.masking as masking
     check("MASK_RULES identical to masking.RULES", masking.RULES == tg.MASK_RULES)
 except Exception as e:
     check("import masking.py", False, repr(e))

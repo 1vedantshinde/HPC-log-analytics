@@ -4,7 +4,7 @@
 # Does NOT touch Spark, HDFS, the events, or the alerts collection.
 import re
 from pymongo import MongoClient, UpdateOne
-from glossary_data import LABELS, PROGRAMS, TEMPLATE_RULES
+from glossary.data import LABELS, PROGRAMS, TEMPLATE_RULES
 
 TOTAL = 211_212_192
 db = MongoClient("mongodb://localhost:27017")["thunderbird"]

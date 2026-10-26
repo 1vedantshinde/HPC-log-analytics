@@ -1,14 +1,14 @@
 import shutil, sys
 
 PATCHES = {
- "add_indexes.py": [
+ "database/add_indexes.py": [
   ('"node_daily": ["rs_node_day"], "templates": ["rs_n_desc"]}', '"node_daily": ["rs_node_day"]}'),
   ('db.templates.create_index([("n", D)], name="rs_n_desc")', 'pass'),
   ('("alerts count label=VAPI", lambda: db.alerts.count_documents({"label": "VAPI"})),',
    '("alerts label=VAPI sort ts desc limit 50", lambda: list(db.alerts.find({"label": "VAPI"}).sort("ts", -1).limit(50))),\n'
    '    ("alerts count label=VAPI", lambda: db.alerts.count_documents({"label": "VAPI"})),'),
  ],
- "research_analyses.py": [
+ "pipeline/research_analyses.py": [
   ('HOUR = 3600', 'HOUR = 3600\nDAY_TZ = os.environ.get("DAY_TZ", "UTC")'),
   ('dayc = F.date_format("ts", "yyyy-MM-dd")',
    'dayc = F.date_format(F.from_utc_timestamp("ts", DAY_TZ), "yyyy-MM-dd")'),
@@ -19,7 +19,7 @@ PATCHES = {
   ('.withColumn("p_base", F.col("base_hours") / (F.col("lnodes") * F.lit(total_hours)))',
    '.withColumn("p_base", F.col("base_hours") / F.col("active_node_hours"))'),
  ],
- "pages/1_Research_Findings.py": [
+ "app/pages/1_Research_Findings.py": [
   ("(all times UTC)", "(replay in UTC; storm days bucketed in {meta.get('day_tz', 'UTC')})"),
  ],
 }
