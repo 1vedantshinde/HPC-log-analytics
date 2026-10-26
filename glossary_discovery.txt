@@ -1,0 +1,252 @@
+=== A. ALERT LABELS: count, top programs, top templates, real example ===
+
+##### VAPI  (3,229,194 alerts)
+  top programs: kernel (3,229,194)
+  [3,229,132x] TEMPLATE: kernel: [KERNEL_IB][tsIbTavorMadProcess][/mnt_projects/sysapps/src/ib/topspin/topspin-src-<N>.<N>.<N>-<N>/ib/tavor/provider/obj_host_amd<N>_custom<N>_rhel<N>/ts…
+           EXAMPLE : [KERNEL_IB][tsIbTavorMadProcess][/mnt_projects/sysapps/src/ib/topspin/topspin-src-3.2.0-16/ib/tavor/provider/obj_host_amd64_custom1_rhel4/ts_ib_tavor/tavor_mad.…
+  [31x] TEMPLATE: kernel: [KERNEL_IB][_tsIbTavorInitOne][/mnt_projects/sysapps/src/ib/topspin/topspin-src-<N>.<N>.<N>-<N>/ib/tavor/provider/obj_host_amd<N>_custom<N>_rhel<N>/ts_i…
+           EXAMPLE : [KERNEL_IB][_tsIbTavorInitOne][/mnt_projects/sysapps/src/ib/topspin/topspin-src-3.2.0-16/ib/tavor/provider/obj_host_amd64_custom1_rhel4/ts_ib_tavor/tavor_main.c…
+  [30x] TEMPLATE: (empty)
+           EXAMPLE : 
+  [1x] TEMPLATE: kernel: VIPKL(<N>): [MM_create_mr]:MM_mr_get_keys fa/topspin-src-<N>.<N>.<N>-<N>/ib/tavor/provider/obj_host_amd<N>_custom<N>_rhel<N>/ts_ib_tavor/tavor_mad.c:<N>…
+           EXAMPLE : VIPKL(1): [MM_create_mr]:MM_mr_get_keys fa/topspin-src-3.2.0-16/ib/tavor/provider/obj_host_amd64_custom1_rhel4/ts_ib_tavor/tavor_mad.c:152]InfiniHost0: EVAPI_pr…
+
+##### PBS_CON  (5,318 alerts)
+  top programs: pbs_mom (5,318)
+  [5,318x] TEMPLATE: pbs_mom: Connection refused (<N>) in open_demux, open_demux: cannot connect to <IP>:<N>
+           EXAMPLE : Connection refused (111) in open_demux, open_demux: cannot connect to 10.100.21.97:49723
+
+##### MPT  (4,583 alerts)
+  top programs: kernel (4,583)
+  [4,501x] TEMPLATE: kernel: mptscsih: ioc<N>: attempting task abort! (sc=<HEX>)
+           EXAMPLE : mptscsih: ioc0: attempting task abort! (sc=00000101bfe63480)
+  [74x] TEMPLATE: kernel: mptscsih: ioc<N>: attempting task abort! (sc=<N>)
+           EXAMPLE : mptscsih: ioc0: attempting task abort! (sc=0000010132091700)
+  [8x] TEMPLATE: (empty)
+           EXAMPLE : 
+
+##### EXT_FS  (4,022 alerts)
+  top programs: kernel (4,022)
+  [3,326x] TEMPLATE: kernel: EXT<N>-fs error (device sda<N>) in start_transaction: Journal has aborted
+           EXAMPLE : EXT3-fs error (device sda5) in start_transaction: Journal has aborted
+  [193x] TEMPLATE: kernel: EXT<N>-fs error (device sda<N>): ext<N>_free_blocks: Freeing blocks not in datazone - block = <N>, count = <N>
+           EXAMPLE : EXT3-fs error (device sda3): ext3_free_blocks: Freeing blocks not in datazone - block = 2505434411, count = 1
+  [173x] TEMPLATE: kernel: EXT<N>-fs error (device sda<N>): ext<N>_journal_start_sb: Detected aborted journal
+           EXAMPLE : EXT3-fs error (device sda5): ext3_journal_start_sb: Detected aborted journal
+  [165x] TEMPLATE: kernel: EXT<N>-fs error (device sda<N>) in ext<N>_free_blocks_sb: Journal has aborted
+           EXAMPLE : EXT3-fs error (device sda3) in ext3_free_blocks_sb: Journal has aborted
+
+##### CPU  (2,741 alerts)
+  top programs: kernel (2,740), None (1)
+  [2,735x] TEMPLATE: kernel: Losing some ticks... checking if CPU frequency changed.
+           EXAMPLE : Losing some ticks... checking if CPU frequency changed.
+  [6x] TEMPLATE: (empty)
+           EXAMPLE : 
+
+##### SCSI  (2,186 alerts)
+  top programs: kernel (2,186)
+  [2,185x] TEMPLATE: kernel: scsi<N> (<N>:<N>): rejecting I/O to offline device
+           EXAMPLE : scsi0 (0:0): rejecting I/O to offline device
+  [1x] TEMPLATE: (empty)
+           EXAMPLE : 
+
+##### ECC  (146 alerts)
+  top programs: None (146)
+  [67x] TEMPLATE: (none): Server Administrator: Instrumentation Service EventID: <N> Memory device status is critical Memory device location: DIMM<N>_B Possible memory module eve…
+           EXAMPLE : Server Administrator: Instrumentation Service EventID: 1404 Memory device status is critical Memory device location: DIMM1_B Possible memory module event cause:…
+  [59x] TEMPLATE: (none): Server Administrator: Instrumentation Service EventID: <N> Memory device status is critical Memory device location: DIMM<N>_A Possible memory module eve…
+           EXAMPLE : Server Administrator: Instrumentation Service EventID: 1404 Memory device status is critical Memory device location: DIMM2_A Possible memory module event cause:…
+  [9x] TEMPLATE: (none): Server Administrator: Instrumentation Service EventID: <N> Memory device status is critical Memory device location: DIMM<N>_A Possible memory module eve…
+           EXAMPLE : Server Administrator: Instrumentation Service EventID: 1404 Memory device status is critical Memory device location: DIMM1_A Possible memory module event cause:…
+  [6x] TEMPLATE: (none): Server Administrator: Instrumentation Service EventID: <N> Memory device status is critical Memory device location: DIMM<N>_B Possible memory module eve…
+           EXAMPLE : Server Administrator: Instrumentation Service EventID: 1404 Memory device status is critical Memory device location: DIMM2_B Possible memory module event cause:…
+
+##### PBS_BFD  (28 alerts)
+  top programs: pbs_mom (28)
+  [28x] TEMPLATE: pbs_mom: Bad file descriptor (<N>) in tm_request, job <N>.tbird-admin<N> not running
+           EXAMPLE : Bad file descriptor (9) in tm_request, job 89042.tbird-admin2 not running
+
+##### CHK_DSK  (13 alerts)
+  top programs: check-disks (13)
+  [12x] TEMPLATE: check-disks: eadmin<N>: <N>/<N>/<N> <N>:<N>:<N>, Fault Status assert (Drive Array,Slot/Connector Number: <N>)
+           EXAMPLE : eadmin1: 2005/12/08 10:37:26, Fault Status assert (Drive Array,Slot/Connector Number: 1)
+  [1x] TEMPLATE: check-disks: eadmin<N>: <N>/<N>/<N> <N>:<N>:<N>, Fault Status assert (deassertion event) (Drive Array,Slot/Connector Number: <N>)
+           EXAMPLE : eadmin1: 2005/12/08 10:37:48, Fault Status assert (deassertion event) (Drive Array,Slot/Connector Number: 1)
+
+##### NMI  (8 alerts)
+  top programs: kernel (8)
+  [8x] TEMPLATE: kernel: Uhhuh. NMI received. Dazed and confused, but trying to continue
+           EXAMPLE : Uhhuh. NMI received. Dazed and confused, but trying to continue
+
+=== B. TOP 60 PROGRAMS (all lines) ===
+  81,052,460  38.37%  alerts=3,242,656  kernel
+  15,474,884   7.33%  alerts=        0  sshd
+  12,037,449   5.70%  alerts=        0  xinetd
+  11,783,880   5.58%  alerts=        0  crond(pam_unix)
+  11,568,525   5.48%  alerts=        0  ib_sm
+  11,152,612   5.28%  alerts=        0  ntpd
+  10,555,150   5.00%  alerts=        0  postfix/postdrop
+   7,231,093   3.42%  alerts=        0  ib_sm.x
+   6,554,723   3.10%  alerts=        0  crond
+   6,476,215   3.07%  alerts=      146  (none)
+   5,592,626   2.65%  alerts=        0  snmpd
+   4,887,977   2.31%  alerts=        0  sshd(pam_unix)
+   2,638,635   1.25%  alerts=        0  sysctl
+   2,581,086   1.22%  alerts=        0  dhcpd
+   2,420,730   1.15%  alerts=        0  time.c
+   2,288,867   1.08%  alerts=        0  smartd
+   1,537,136   0.73%  alerts=        0  sshd2
+   1,471,640   0.70%  alerts=        0  MDT
+   1,019,642   0.48%  alerts=        0  /apps/x86_64/system/ganglia-3.0.1/sbin/gmetad
+     938,506   0.44%  alerts=        0  rc.sysinit
+     851,834   0.40%  alerts=    5,346  pbs_mom
+     836,368   0.40%  alerts=        0  fsck
+     540,739   0.26%  alerts=        0  /usr/sbin/gmetad
+     508,052   0.24%  alerts=        0  dataeng
+     484,342   0.23%  alerts=       78  (empty)
+     462,627   0.22%  alerts=        0  sendmail
+     430,688   0.20%  alerts=        0  anacron
+     400,282   0.19%  alerts=        0  smokeping
+     377,504   0.18%  alerts=        0  RT
+     373,434   0.18%  alerts=        0  mount
+     333,402   0.16%  alerts=        0  port_mgr.x
+     327,745   0.16%  alerts=        0  network
+     269,268   0.13%  alerts=        0  mount.panfs
+     239,172   0.11%  alerts=        0  logger
+     237,890   0.11%  alerts=        0  netfs
+     225,143   0.11%  alerts=        0  instsvcdrv
+     224,902   0.11%  alerts=        0  su
+     207,586   0.10%  alerts=        0  syslog
+     196,437   0.09%  alerts=        0  rc
+     193,327   0.09%  alerts=        0  haldaemon
+     180,600   0.09%  alerts=        0  init
+     175,516   0.08%  alerts=        0  omsad
+     170,078   0.08%  alerts=        0  messagebus
+     168,503   0.08%  alerts=        0  VFS
+     163,761   0.08%  alerts=        0  nfslock
+     163,579   0.08%  alerts=        0  postfix/master
+     151,490   0.07%  alerts=        0  postfix
+     138,922   0.07%  alerts=        0  postfix/qmgr
+     137,220   0.06%  alerts=        0  acpid
+     134,301   0.06%  alerts=        0  portmap
+     130,038   0.06%  alerts=        0  gmond
+     124,382   0.06%  alerts=        0  in.tftpd
+     122,454   0.06%  alerts=        0  rpc.statd
+     117,336   0.06%  alerts=        0  ntpdate
+     112,232   0.05%  alerts=        0  PBS_Server
+     106,691   0.05%  alerts=        0  postfix/smtp
+      97,761   0.05%  alerts=        0  lvm.static
+      96,668   0.05%  alerts=        0  syslog-ng
+      93,590   0.04%  alerts=        0  cli.x
+      90,640   0.04%  alerts=        0  udevsend
+
+=== C. COVERAGE: how many top templates cover what share of all lines ===
+top    10 templates -> 28.96% of all lines
+top    25 templates -> 47.07% of all lines
+top    50 templates -> 57.63% of all lines
+top   100 templates -> 68.87% of all lines
+top   200 templates -> 77.37% of all lines
+top   500 templates -> 89.80% of all lines
+top  1000 templates -> 97.31% of all lines
+
+=== D. TOP 50 TEMPLATES with one real example ===
+ 1. [10,549,840x, alerts=0] postfix/postdrop: warning: mail_queue_enter: create file maildrop/<N>.<N>: Read-only file system
+      example: warning: mail_queue_enter: create file maildrop/578758.23425: Read-only file system
+ 2. [9,125,638x, alerts=0] ntpd: synchronized to <IP>, stratum <N>
+      example: synchronized to 10.100.14.250, stratum 3
+ 3. [7,752,358x, alerts=0] xinetd: START: rsync pid=<N> from=<IP>
+      example: START: rsync pid=10044 from=10.100.29.36
+ 4. [5,819,024x, alerts=0] crond(pam_unix): session opened for user root by (uid=<N>)
+      example: session opened for user root by (uid=0)
+ 5. [5,811,003x, alerts=0] crond(pam_unix): session closed for user root
+      example: session closed for user root
+ 6. [4,930,454x, alerts=0] snmpd: Got trap from peer on fd <N>
+      example: Got trap from peer on fd 13
+ 7. [4,600,761x, alerts=0] crond: (root) CMD (run-parts /etc/cron.hourly)
+      example: (root) CMD (run-parts /etc/cron.hourly)
+ 8. [4,501,845x, alerts=0] sshd: Accepted publickey for root from ::ffff:<IP> port <N> ssh<N>
+      example: Accepted publickey for root from ::ffff:10.100.248.2 port 58793 ssh2
+ 9. [4,494,746x, alerts=0] sshd(pam_unix): session opened for user root by (uid=<N>)
+      example: session opened for user root by (uid=0)
+10. [3,589,113x, alerts=0] kernel: VIPKL(<N>): [MM_create_mr]:MM_mr_get_keys failed
+      example: VIPKL(1): [MM_create_mr]:MM_mr_get_keys failed
+11. [3,582,277x, alerts=0] kernel: THH(<N>): XHH_mrwm_register_mr: rc=HH_EAGAIN
+      example: THH(1): XHH_mrwm_register_mr: rc=HH_EAGAIN
+12. [3,581,843x, alerts=0] kernel: THH(<N>): mnt_projects/sysapps/src/ib/topspin/topspin-src-<N>.<N>.<N>-<N>/third_party/thca<N>_linux/kernel/mlxhh/thh/obj_host_amd<N>_custom<N>_rhel<N>/m…
+      example: THH(4): mnt_projects/sysapps/src/ib/topspin/topspin-src-3.2.0-16/third_party/thca4_linux/kernel/mlxhh/thh/obj_host_amd64_custom1_rhel4/mod_thh/tptm.c[263]: rese…
+13. [3,581,499x, alerts=0] kernel: THH(<N>): mnt_projects/sysapps/src/ib/topspin/topspin-src-<N>.<N>.<N>-<N>/third_party/thca<N>_linux/kernel/mlxhh/thh/obj_host_amd<N>_custom<N>_rhel<N>/m…
+      example: THH(4): mnt_projects/sysapps/src/ib/topspin/topspin-src-3.2.0-16/third_party/thca4_linux/kernel/mlxhh/thh/obj_host_amd64_custom1_rhel4/mod_thh/tptm.c[1093]: all…
+14. [3,410,315x, alerts=0] kernel: MOSAL(<N>): mnt_projects/sysapps/src/ib/topspin/topspin-src-<N>.<N>.<N>-<N>/third_party/thca<N>_linux/kernel/mlxsys/obj_host_amd<N>_custom<N>_rhel<N>/ml…
+      example: MOSAL(1): mnt_projects/sysapps/src/ib/topspin/topspin-src-3.2.0-16/third_party/thca4_linux/kernel/mlxsys/obj_host_amd64_custom1_rhel4/mlxsys/mosal_mem.c[422]: M…
+15. [3,229,678x, alerts=0] kernel: THH(<N>): mnt_projects/sysapps/src/ib/topspin/topspin-src-<N>.<N>.<N>-<N>/third_party/thca<N>_linux/kernel/mlxhh/thh/obj_host_amd<N>_custom<N>_rhel<N>/m…
+      example: THH(1): mnt_projects/sysapps/src/ib/topspin/topspin-src-3.2.0-16/third_party/thca4_linux/kernel/mlxhh/thh/obj_host_amd64_custom1_rhel4/mod_thh/hob_comm.c[1597]:…
+16. [3,229,162x, alerts=3,229,132] kernel: [KERNEL_IB][tsIbTavorMadProcess][/mnt_projects/sysapps/src/ib/topspin/topspin-src-<N>.<N>.<N>-<N>/ib/tavor/provider/obj_host_amd<N>_custom<N>_rhel<N>/ts…
+      example: [KERNEL_IB][tsIbTavorMadProcess][/mnt_projects/sysapps/src/ib/topspin/topspin-src-3.2.0-16/ib/tavor/provider/obj_host_amd64_custom1_rhel4/ts_ib_tavor/tavor_mad.…
+17. [2,416,469x, alerts=0] time.c: Lost <N> timer tick(s)! rip __do_softirq+<HEX>/<HEX>)
+      example: Lost 34 timer tick(s)! rip __do_softirq+0x4d/0xd0)
+18. [2,412,260x, alerts=0] (none): Server Administrator: Instrumentation Service EventID: <N> Temperature sensor returned to a normal value Sensor location: BMC Ambient Temp Chassis locat…
+      example: Server Administrator: Instrumentation Service EventID: 1052 Temperature sensor returned to a normal value Sensor location: BMC Ambient Temp Chassis location: Ma…
+19. [2,404,987x, alerts=0] (none): Server Administrator: Instrumentation Service EventID: <N> Temperature sensor detected a warning value Sensor location: BMC Ambient Temp Chassis locatio…
+      example: Server Administrator: Instrumentation Service EventID: 1053 Temperature sensor detected a warning value Sensor location: BMC Ambient Temp Chassis location: Main…
+20. [2,246,007x, alerts=0] sshd: connection from "<ANON>"
+      example: connection from "#569#"
+21. [2,011,287x, alerts=0] kernel: [KERNEL_IB][ib_mad_dispatch][/mnt_projects/sysapps/src/ib/topspin/topspin-src-<N>.<N>.<N>-<N>/ib/ts_api_ng/mad/obj_host_amd<N>_custom<N>_rhel<N>/ts_ib_m…
+      example: [KERNEL_IB][ib_mad_dispatch][/mnt_projects/sysapps/src/ib/topspin/topspin-src-3.2.0-16/ib/ts_api_ng/mad/obj_host_amd64_custom1_rhel4/ts_ib_mad/mad_filter.c:292]…
+22. [1,536,189x, alerts=0] sshd: Local disconnected: Connection closed.
+      example: Local disconnected: Connection closed.
+23. [1,536,164x, alerts=0] sshd: connection lost: 'Connection closed.'
+      example: connection lost: 'Connection closed.'
+24. [1,532,991x, alerts=0] ib_sm.x: [ib_sm_discovery.c:<N>]: Failed to GetNodeInfo() because of NO RESPONSE
+      example: [ib_sm_discovery.c:470]: Failed to GetNodeInfo() because of NO RESPONSE
+25. [1,532,989x, alerts=0] ib_sm.x: [ib_sm_discovery.c:<N>]: Failed to GetNodeInfo() - hop_count: <N>, direct_path: <N>, <N>, <N>, <N>, <N>, <N>, <N>, <N>, <N>, <N>
+      example: [ib_sm_discovery.c:490]: Failed to GetNodeInfo() - hop_count: 6, direct_path: 0, 1, 3, 13, 6, 4, 17, 0, 0, 0
+26. [1,532,051x, alerts=0] ib_sm.x: [ib_sm_discovery.c:<N>]: Failed discover node test, node <HEX>, port_num= <N>, error code <N>
+      example: [ib_sm_discovery.c:1103]: Failed discover node test, node 5ad0000027858, port_num= 7, error code 1
+27. [1,528,131x, alerts=0] sshd2: Now running on <ANON>'s privileges.
+      example: Now running on #41#'s privileges.
+28. [1,473,279x, alerts=0] sshd: User <ANON>, coming from tbird-<ANON>, authenticated.
+      example: User #41#, coming from tbird-#2402#, authenticated.
+29. [1,273,185x, alerts=0] xinetd: FAIL: rsync service_limit from=<IP>
+      example: FAIL: rsync service_limit from=10.100.26.54
+30. [1,218,141x, alerts=0] kernel: [KERNEL_IB][ib_mad_dispatch][/mnt_projects/sysapps/src/ib/topspin/topspin-src-<N>.<N>.<N>-<N>-mad_inst/ib/ts_api_ng/mad/obj_host_amd<N>_custom<N>_rhel<N…
+      example: [KERNEL_IB][ib_mad_dispatch][/mnt_projects/sysapps/src/ib/topspin/topspin-src-3.2.0-16-mad_inst/ib/ts_api_ng/mad/obj_host_amd64_custom1_rhel4/ts_ib_mad/mad_filt…
+31. [1,136,092x, alerts=0] ib_sm: [ib_sm_discovery.c:<N>]: Failed to GetNodeInfo() - hop_count: <N>, direct_path: <N>, <N>, <N>, <N>, <N>, <N>, <N>, <N>, <N>, <N>
+      example: [ib_sm_discovery.c:495]: Failed to GetNodeInfo() - hop_count: 6, direct_path: 0, 1, 2, 13, 22, 10, 22, 0, 0, 0
+32. [1,135,867x, alerts=0] ib_sm: [ib_sm_discovery.c:<N>]: Failed to GetNodeInfo() because of NO RESPONSE
+      example: [ib_sm_discovery.c:475]: Failed to GetNodeInfo() because of NO RESPONSE
+33. [1,031,090x, alerts=0] kernel: ACPI: PCI interrupt <N>:<N>:<N>.<N>[A] -> GSI <N> (level, low) -> IRQ <N>
+      example: ACPI: PCI interrupt 0000:02:05.0[A] -> GSI 34 (level, low) -> IRQ 201
+34. [825,802x, alerts=0] kernel: pan_ips: error -- cmd_destroy: destroying aborted (rc=<HEX> (IPS: command timed out)) command <HEX> (<N>:<N>:<N>)
+      example: pan_ips: error -- cmd_destroy: destroying aborted (rc=0x1d78 (IPS: command timed out)) command 0xffffff0011195ed8 (0:0:40)
+35. [823,060x, alerts=0] kernel: pan_ips: error -- cmd_destroy: invoking callback on aborted (rc=<HEX> (IPS: command timed out)) command <HEX>
+      example: pan_ips: error -- cmd_destroy: invoking callback on aborted (rc=0x1d78 (IPS: command timed out)) command 0xffffff0011192e40
+36. [816,026x, alerts=0] kernel: pan_ips: error -- cmd_destroy: destroying timed out command cd=<HEX>
+      example: pan_ips: error -- cmd_destroy: destroying timed out command cd=0xffffff0011593658
+37. [783,449x, alerts=0] kernel: pan_ips: error -- IPS command timeout command timed out expire_time=<N>:<N> now=<N>:<N> lifetime=<N>:<N> grace_timeouts=<N> cd=<HEX> session=<HEX> (conn…
+      example: pan_ips: error -- IPS command timeout command timed out expire_time=1144161387:166168000 now=1144161413:575224000 lifetime=101:409056000 grace_timeouts=0 cd=0xf…
+38. [775,519x, alerts=0] ib_sm: [ib_sm_sweep.c:<N>]: ********************** NEW SWEEP ********************
+      example: [ib_sm_sweep.c:1914]: ********************** NEW SWEEP ********************
+39. [761,978x, alerts=0] ib_sm: [ib_sm_sweep.c:<N>]: No topology change
+      example: [ib_sm_sweep.c:1516]: No topology change
+40. [719,701x, alerts=0] MDT: %RPM<N>-P:CP %IFMGR-<N>-OSTATE_DN: Changed interface state to down: Gi <N>/<N>
+      example: %RPM0-P:CP %IFMGR-5-OSTATE_DN: Changed interface state to down: Gi 8/89
+41. [712,220x, alerts=0] MDT: %RPM<N>-P:CP %IFMGR-<N>-OSTATE_UP: Changed interface state to up: Gi <N>/<N>
+      example: %RPM0-P:CP %IFMGR-5-OSTATE_UP: Changed interface state to up: Gi 8/89
+42. [675,163x, alerts=0] sshd: authentication cancelled by user: 'Authentication cancelled by user.'
+      example: authentication cancelled by user: 'Authentication cancelled by user.'
+43. [675,161x, alerts=0] sshd: Remote host disconnected: Authentication cancelled by user.
+      example: Remote host disconnected: Authentication cancelled by user.
+44. [672,208x, alerts=0] smartd: Device: /dev/sda, Temperature changed <N> Celsius to <N> Celsius since last report
+      example: Device: /dev/sda, Temperature changed 3 Celsius to 31 Celsius since last report
+45. [650,075x, alerts=0] kernel: VIPKL(<N>): mnt_projects/sysapps/src/ib/topspin/topspin-src-<N>.<N>.<N>-<N>/third_party/thca<N>_linux/kernel/vip/obj_host_amd<N>_custom<N>_rhel<N>/mod_v…
+      example: VIPKL(1): mnt_projects/sysapps/src/ib/topspin/topspin-src-3.2.0-16/third_party/thca4_linux/kernel/vip/obj_host_amd64_custom1_rhel4/mod_vip/mmu.c[243]: make_iobu…
+46. [632,293x, alerts=0] kernel: ACPI: LAPIC_NMI (acpi_id[<HEX>] high edge lint[<HEX>])
+      example: ACPI: LAPIC_NMI (acpi_id[0x01] high edge lint[0x1])
+47. [612,931x, alerts=0] kernel: MOSAL(<N>): pid=<N>
+      example: MOSAL(1): pid=519
+48. [612,917x, alerts=0] kernel: MOSAL(<N>): next = <N>
+      example: MOSAL(1): next = 0000000000000000
+49. [612,819x, alerts=0] kernel: MOSAL(<N>): mlock_ctx = <N>
+      example: MOSAL(1): mlock_ctx = 0000000000000000
+50. [612,813x, alerts=0] kernel: MOSAL(<N>): prev = <N>
+      example: MOSAL(1): prev = 0000000000000000

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distributed HPC Log Anomaly Analytics — Big Data Mini Project Proposal</title>
+<style>
+  :root{
+    --bg:#f6f7f6; --panel:#ffffff; --ink:#1b1e22; --muted:#5a616c; --line:#e1e3e0;
+    --accent:#1f5c4d; --accent2:#8a3b1f; --good:#2f6f4e; --warn:#946200; --code-bg:#161a20; --code-ink:#e6ede8;
+    --table-head:#e6efe9;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:"Georgia","Iowan Old Style","Palatino Linotype",serif; line-height:1.5; font-size:15.5px;}
+  .wrap{max-width:1180px; margin:0 auto; padding:28px 26px 80px;}
+  header.doc-head{border-bottom:3px double var(--accent); padding-bottom:16px; margin-bottom:20px;}
+  header.doc-head h1{font-size:1.8rem; margin:0 0 6px; color:var(--accent);}
+  header.doc-head .sub{color:var(--muted); font-size:.95rem;}
+  .sizecallout{background:#eaf3ee; border:1px solid #bcdccb; border-left:5px solid var(--good); padding:10px 16px; border-radius:6px; margin-bottom:22px; font-family:"Trebuchet MS",sans-serif; font-size:.9rem;}
+  .sizecallout b{color:var(--accent);}
+  nav.toc{background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:14px 18px; margin-bottom:26px; font-size:.88rem;}
+  nav.toc h2{margin:0 0 8px; font-size:.95rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);}
+  nav.toc ol{columns:2; column-gap:28px; margin:0; padding-left:18px;}
+  nav.toc a{color:var(--accent); text-decoration:none;}
+  nav.toc a:hover{text-decoration:underline;}
+  section{margin-bottom:34px;}
+  h2.section-title{font-size:1.28rem; color:#fff; background:var(--accent); padding:8px 14px; border-radius:4px; margin:0 0 14px; font-family:"Trebuchet MS",sans-serif;}
+  h3{font-size:1.05rem; color:var(--accent2); margin:20px 0 8px; font-family:"Trebuchet MS",sans-serif;}
+  h4{font-size:.95rem; color:var(--ink); margin:14px 0 6px; font-family:"Trebuchet MS",sans-serif; text-decoration:underline;}
+  p{margin:8px 0;}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:16px 20px; margin-bottom:14px;}
+  .exec{background:#fbf8ee; border:1px solid #e6dcb8; border-left:5px solid var(--warn);}
+  table{width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:.87rem; background:var(--panel);}
+  caption{text-align:left; font-style:italic; color:var(--muted); margin-bottom:6px; font-size:.85rem;}
+  th, td{border:1px solid var(--line); padding:7px 9px; vertical-align:top; text-align:left;}
+  th{background:var(--table-head); font-family:"Trebuchet MS",sans-serif; font-weight:700; font-size:.82rem; text-transform:uppercase;}
+  tr:nth-child(even) td{background:#fafaf9;}
+  code, .mono{font-family:"SF Mono","Consolas","Menlo",monospace; font-size:.83em;}
+  pre{background:var(--code-bg); color:var(--code-ink); padding:14px 16px; border-radius:6px; overflow-x:auto; font-family:"SF Mono","Consolas","Menlo",monospace; font-size:.82rem; line-height:1.5;}
+  .tag{display:inline-block; padding:1px 8px; border-radius:10px; font-size:.72rem; font-weight:700; font-family:"Trebuchet MS",sans-serif;}
+  .tag.must{background:#e4f1e9; color:var(--good);}
+  .tag.should{background:#fdf1dc; color:var(--warn);}
+  .tag.opt{background:#eee; color:var(--muted);}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media(max-width:800px){.grid2,.grid3{grid-template-columns:1fr;} nav.toc ol{columns:1;}}
+  .badge-row{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0;}
+  .badge{background:var(--table-head); border:1px solid var(--line); border-radius:4px; padding:4px 10px; font-size:.78rem; font-family:"Trebuchet MS",sans-serif;}
+  .note{font-size:.85rem; color:var(--muted); font-style:italic;}
+  .arch{white-space:pre; font-family:"SF Mono","Consolas","Menlo",monospace; font-size:.78rem; background:var(--code-bg); color:var(--code-ink); padding:16px; border-radius:6px; overflow-x:auto; line-height:1.4;}
+  a{color:var(--accent2);}
+  .altcard{border-left:4px solid var(--muted); padding-left:12px; margin-bottom:10px;}
+  .altcard h4{margin-top:0; text-decoration:none; color:var(--accent2);}
+  .rej{color:var(--accent2); font-weight:700;}
+  .kv{display:grid; grid-template-columns:260px 1fr; gap:4px 12px; font-size:.88rem;}
+  .kv div:nth-child(odd){color:var(--muted); font-family:"Trebuchet MS",sans-serif; font-size:.8rem; text-transform:uppercase; padding-top:2px;}
+  footer{border-top:1px solid var(--line); margin-top:40px; padding-top:14px; font-size:.8rem; color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc-head">
+  <h1>Distributed Log Parsing and Anomalous-Event Detection in HPC Supercomputer System Logs</h1>
+  <div class="sub">Big Data Analytics Mini Project — Proposal &amp; Planning Document · PySpark + HDFS + MongoDB + Streamlit + Docker · Revision 2 · September 2026</div>
+</header>
+
+<div class="sizecallout">
+<b>Working dataset size: 29.6 GB (Thunderbird log, standalone) — optionally 30.3 GB with BGL added for cross-system comparison.</b>
+No subsetting, sampling, or artificial scaling is required. This is the dataset's real, documented, as-downloaded size, confirmed against a peer-reviewed source (see Dataset Plan). It sits inside the 10–40 GB requirement without any construction step.
+</div>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#exec">Executive Summary</a></li>
+    <li><a href="#alts">Candidate Projects Considered</a></li>
+    <li><a href="#title">1. Title</a></li>
+    <li><a href="#ps">2. Problem Statement</a></li>
+    <li><a href="#eps">3. Extended Problem Statement</a></li>
+    <li><a href="#valid">4. Why This Is a Valid Problem</a></li>
+    <li><a href="#method">5. Proposed Methodology</a></li>
+    <li><a href="#sw">6. Software Requirements</a></li>
+    <li><a href="#hw">7. Hardware Requirements</a></li>
+    <li><a href="#mvp">8. MVP Objectives</a></li>
+    <li><a href="#rubric">9. Rubric Satisfaction Mapping</a></li>
+    <li><a href="#novelty">10. Novelty</a></li>
+    <li><a href="#exp">Experimental Design</a></li>
+    <li><a href="#dataset">Dataset Plan</a></li>
+    <li><a href="#research">Research Foundation</a></li>
+    <li><a href="#plan">Implementation Plan</a></li>
+    <li><a href="#viva">Viva Preparation</a></li>
+    <li><a href="#risk">Risks &amp; Mitigations</a></li>
+    <li><a href="#final">Final Feasibility Assessment</a></li>
+  </ol>
+</nav>
+
+<section id="exec">
+<h2 class="section-title">Executive Summary</h2>
+<div class="card exec">
+<p><strong>Selected project:</strong> distributed parsing, feature construction, and anomaly/alert characterization over the <strong>Thunderbird supercomputer system log</strong> — a real, peer-reviewed, openly licensed dataset of raw console/syslog output from Sandia National Laboratories' 9,024-processor Thunderbird supercomputer. The dataset comprises <strong>211,212,192 log lines spanning 244 days, at a documented raw size of 29.60 GB</strong>, with per-line alert/non-alert labels already present <a href="https://arxiv.org/pdf/2008.06448" target="_blank">[He, Zhu, He, Lyu — Loghub, arXiv 2020 / ISSRE 2023]</a>, <a href="https://github.com/logpai/loghub" target="_blank">[Loghub GitHub, logpai]</a>. This is the dataset's true documented size — it is not a subset, sample, or artificial scale-up, and it falls inside the 10–40 GB range on its own.</p>
+<p>The data is genuinely unstructured: each line is free-form console/syslog text produced by heterogeneous kernel, daemon, and hardware-monitoring subsystems, with no fixed schema across message types. Extracting any structured signal (per-node error rates, alert timelines, event-template frequency) requires <strong>distributed log parsing</strong> across 211 million lines — a canonical Big Data problem, not an ordinary query. Every rubric technology has a non-artificial role: <strong>HDFS</strong> stores the raw log partitioned by time window; <strong>PySpark</strong> performs distributed template mining/parsing (Drain-style), per-node and per-window feature aggregation, and sequence construction; <strong>MongoDB</strong> stores parsed log-event documents whose parameter fields genuinely vary by template — a real semi-structured storage need, not a bolt-on; <strong>Streamlit</strong> renders an interactive alert-timeline and template-frequency dashboard; <strong>Docker</strong> containerizes the dashboard and database for reproducible grading.</p>
+<p>Domain fit: this is squarely a <strong>low-level systems / HPC telemetry</strong> project (preferred domain #2). The dataset is one of the three most-used benchmarks in the log-anomaly-detection literature <a href="https://ceur-ws.org/Vol-3885/paper21.pdf" target="_blank">[Juknys, 2023 literature review]</a>, with an unbroken, citable research lineage from 2007 (the original supercomputer-log study that produced this data) through active 2023–2024 work, leaving clear room for a student-scale, fully open, reproducible distributed pipeline. Estimated effort: 7–10 focused days; no GPU or paid software required.</p>
+</div>
+</section>
+
+<section id="alts">
+<h2 class="section-title">Candidate Projects Considered</h2>
+<p>Eight candidates were evaluated. Every dataset size below is stated as documented by its primary source — none are approximations dressed up as facts.</p>
+
+<div class="altcard">
+<h4>Backblaze Drive Stats (storage-reliability telemetry)</h4>
+<p>Full historical archive is documented at ~21 GB compressed / ~128 GB uncompressed <a href="https://discuss.huggingface.co/t/drive-stats-data-set-upload-files-to-dataset-repo-or-link-to-them/56054" target="_blank">[HF/Backblaze staff]</a>. <span class="rej">Rejected this revision:</span> staying inside 10–40 GB requires the team to deliberately choose a multi-year window and defend that choice, which is an avoidable source of scope ambiguity. A dataset whose natural, undivided size already sits inside the target band is a cleaner, more defensible choice for a one-week project.</p>
+</div>
+
+<div class="altcard">
+<h4>CERN CMS/ATLAS Open Data (particle collision events)</h4>
+<p>Primary datasets: 27 TB (2010 data), 100–390 TB (2011/2015 data) <a href="https://cms.cern/node/1636" target="_blank">[CMS]</a>, <a href="https://opendata.cern.ch/docs/first-cms-open-data-from-lhc-run-2-released" target="_blank">[CERN Open Data]</a>; simplified education releases are only a few GB. <span class="rej">Rejected:</span> no natural middle ground in the 10–40 GB band without arbitrary event-count slicing, and primary data requires CMS-specific ROOT/CMSSW tooling incompatible with a one-week Spark/HDFS pipeline.</p>
+</div>
+
+<div class="altcard">
+<h4>Windows Event Log (Loghub collection)</h4>
+<p>26.09 GB, 114,608,388 messages, 226.7 days <a href="https://github.com/logpai/loghub" target="_blank">[Loghub]</a>. A genuinely well-sized, single-file alternative in the same family. <span class="rej">Not selected:</span> desktop-OS event log rather than HPC/supercomputer telemetry — a weaker match to the "low-level architecture/systems" domain than a real supercomputer's console log, and it lacks Thunderbird's fine-grained alert-category labelling.</p>
+</div>
+
+<div class="altcard">
+<h4>HDFS_2 log (Loghub collection)</h4>
+<p>16.06 GB, 71,118,073 messages <a href="https://github.com/logpai/loghub" target="_blank">[Loghub]</a>. <span class="rej">Not selected:</span> HDFS block-operation logs are highly repetitive (mostly routine block-replication messages), giving materially less analytical depth and template diversity than a heterogeneous supercomputer console log; also slightly redundant given Hadoop/HDFS is already part of our infrastructure stack.</p>
+</div>
+
+<div class="altcard">
+<h4>Gaia DR3 astrometric catalogue</h4>
+<p>&gt;1 TB full archive; tunable regional CSV extracts. <span class="rej">Rejected:</span> uniform, purely structured tabular schema gives a weak, artificial justification for a NoSQL/document-store component.</p>
+</div>
+
+<div class="altcard">
+<h4>LIGO/Virgo GWOSC gravitational-wave strain data</h4>
+<p>Real and scientifically significant <a href="https://gwosc.org" target="_blank">[GWOSC]</a>, but individually small per event; reaching 10–40 GB means pulling continuous strain segments meant for matched-filtering signal-processing pipelines. <span class="rej">Rejected:</span> weak NoSQL/variety justification (uniform binary time-series) and a different core skillset (DSP, not data engineering).</p>
+</div>
+
+<div class="altcard">
+<h4>Google Cluster Workload Traces (2011/2019)</h4>
+<p>2019 trace ~2.4 TB; 2011 trace tens of GB but dated and BigQuery/Avro-native. <span class="rej">Not selected:</span> tooling friction and a thinner recent-literature base specific to a reproducible student angle, versus the very active log-anomaly-detection literature around Loghub datasets.</p>
+</div>
+
+<div class="altcard" style="border-left-color:var(--good);">
+<h4>✔ Thunderbird supercomputer log (Loghub) — SELECTED, optionally + BGL</h4>
+<p>29.60 GB standalone, 211,212,192 lines, 244 days, alert-labelled, from a real 9,024-processor HPC system at Sandia National Labs <a href="https://arxiv.org/pdf/2008.06448" target="_blank">[Loghub]</a>. Genuinely unstructured free-text records with real schema heterogeneity across subsystems; no access wall (Zenodo-hosted, open research licence); exactly in the "systems / HPC telemetry / event-log" preferred category; one of the three most-cited benchmark datasets in the log-anomaly literature <a href="https://ceur-ws.org/Vol-3885/paper21.pdf" target="_blank">[Juknys 2023]</a>; optionally paired with BGL (708.76 MB, 4,747,963 lines, also alert-labelled, from LLNL's Blue Gene/L) for a cross-supercomputer comparative analysis, bringing the combined corpus to ~30.3 GB — still comfortably inside 10–40 GB.</p>
+</div>
+</section>
+
+<section id="title">
+<h2 class="section-title">1. Title</h2>
+<div class="card">
+<p style="font-size:1.15rem; font-weight:700; color:var(--accent);">"Distributed Template Mining and Alert-Pattern Characterization in Supercomputer Console Logs Using PySpark, HDFS and MongoDB"</p>
+<p class="note">Names the domain (HPC/supercomputer system logs), the Big Data mechanism (distributed template mining across a 211-million-line corpus), and the concrete stack, without overstating scientific novelty.</p>
+</div>
+</section>
+
+<section id="ps">
+<h2 class="section-title">2. Problem Statement</h2>
+<div class="card">
+<p>Sandia National Laboratories' Thunderbird supercomputer (9,024 processors, 27,072 GB memory) produced a continuous console/syslog stream over 244 days, released as a labelled research dataset of 211,212,192 log lines (29.60 GB raw text) <a href="https://arxiv.org/pdf/2008.06448" target="_blank">[Loghub]</a>. Each line is free-form text emitted by whichever kernel module, daemon, or hardware-monitoring subsystem generated it, with no consistent column structure across message types; a small subset of lines are pre-labelled as alerts (hardware/software fault indications) rather than routine status output.</p>
+<p>The analytical problem is to <strong>recover structure from this unstructured stream at scale</strong>: mine the finite set of underlying log "templates" (recurring message shapes with variable parameters — node IDs, addresses, timestamps, counters), classify each of the 211 million lines against that template set, and use the resulting structured event stream to characterize alert timing, per-node fault concentration, and template-frequency drift over the 244-day window. This is not achievable through ordinary database querying because the raw data is not yet in queryable form — parsing free text into structured events at 211-million-line scale is itself the distributed computation, and only after that step does any SQL-like query become meaningful.</p>
+<p><strong>Who benefits:</strong> HPC system operators and reliability researchers, mirroring the original purpose of this data family — early detection of developing hardware/software faults in large compute clusters, as established by the foundational study that first analyzed logs of this kind <a href="http://ieeexplore.ieee.org/document/4273008/" target="_blank">[Oliner &amp; Stearley, DSN 2007]</a>.</p>
+<p><strong>Why not single-machine:</strong> line-by-line regex/template matching across 211 million records, followed by per-node time-windowed aggregation and sequence construction (sliding windows of recent event types per node, the standard input representation for log-based anomaly detection <a href="#research">[Du et al., DeepLog, CCS 2017]</a>), are naturally expressed as partitionable, order-sensitive distributed transformations. A single Python process parsing this file line-by-line would need to hold intermediate template-frequency state for the entire run and cannot exploit multi-core/multi-node parallelism without re-implementing what Spark already provides.</p>
+</div>
+</section>
+
+<section id="eps">
+<h2 class="section-title">3. Extended Problem Statement</h2>
+<div class="card">
+<div class="grid2">
+<div>
+<h4>Volume</h4>
+<p>29.60 GB raw text, 211.2 million lines (Thunderbird alone); optionally +4.7 million lines / 708.76 MB (BGL) for a two-system comparison, ~30.3 GB combined.</p>
+<h4>Variety</h4>
+<p>Genuine and severe: dozens of distinct message-generating subsystems (kernel, PBS scheduler, hardware monitors, network stack) each with their own line format; no shared schema across message types until parsing recovers one. This is the concrete justification for storing parsed events as MongoDB documents rather than a single rigid table.</p>
+<h4>Velocity</h4>
+<p>Not a live streaming problem for this project — the log is a historical, already-collected batch archive. We treat this honestly as a batch Big Data problem; we do not manufacture a streaming/velocity narrative that the data does not support.</p>
+</div>
+<div>
+<h4>Data quality &amp; schema complexity</h4>
+<p>Free-text messages contain embedded variable tokens (hex addresses, PIDs, timestamps, counters) that must be masked/extracted for template mining to converge; alert labels are sparse relative to routine (non-alert) lines, giving a rare-event/imbalanced characteristic similar to other fault/failure-detection problems.</p>
+<h4>Distributed processing requirements</h4>
+<p>Line-level tokenization and template-matching at 211M-row scale; per-node groupBy for time-windowed event-count features; ordered sliding-window sequence construction per node (a shuffle-heavy operation), all of which are the actual justification for PySpark's partitioned execution model.</p>
+<h4>Query &amp; analytical requirements</h4>
+<p>Filter by date range, node ID, template/event type, alert-only view; drill into a specific node's event timeline — the MongoDB + Streamlit query surface, built on Spark-produced aggregates rather than re-scanning the raw log per interaction.</p>
+<h4>Scalability bottlenecks to discuss in the report</h4>
+<p>Shuffle cost of the per-node ordered-window operation; skew if a small number of nodes dominate log volume; small-file vs. large-file trade-off when choosing the HDFS block/partition granularity for a single 29.6 GB text file.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="valid">
+<h2 class="section-title">4. Why This Is a Valid Problem</h2>
+<div class="card">
+<table>
+<caption>Established facts vs. paper claims vs. this project's contribution</caption>
+<tr><th style="width:16%">Category</th><th>Statement</th></tr>
+<tr><td><strong>Established fact</strong></td><td>The Thunderbird dataset is a documented, peer-reviewed 29.60 GB / 211,212,192-line labelled log from a real 9,024-processor supercomputer, publicly hosted and citable <a href="https://arxiv.org/pdf/2008.06448" target="_blank">[Loghub, arXiv 2020 / ISSRE 2023]</a>.</td></tr>
+<tr><td><strong>Established fact</strong></td><td>Large-scale supercomputer console logs of this kind were first systematically studied to characterize alert/failure patterns across five real HPC systems, establishing that meaningful fault signal exists in this class of data <a href="http://ieeexplore.ieee.org/document/4273008/" target="_blank">[Oliner &amp; Stearley, "What Supercomputers Say," DSN 2007]</a>.</td></tr>
+<tr><td><strong>Paper claim</strong></td><td>Structured log-template mining plus source-code-assisted parsing can detect large-scale system problems from console logs in production distributed systems <a href="https://www.sigops.org/sosp/sosp09/papers/xu-sosp09.pdf" target="_blank">[Xu et al., SOSP 2009]</a> — a claim from that paper's own evaluation, not a guarantee for our pipeline.</td></tr>
+<tr><td><strong>Paper claim</strong></td><td>Treating parsed log-template sequences as an LSTM input (workflow modelling) detects anomalies competitively on HDFS/BGL-family data <a href="#research">[Du et al., DeepLog, CCS 2017]</a>; this is the paper's reported result on its own benchmarks, not a claim about Thunderbird specifically.</td></tr>
+<tr><td><strong>Paper claim</strong></td><td>A fixed-depth-tree online parsing algorithm (Drain) can mine log templates in a single streaming pass with documented accuracy across multiple log types including supercomputer logs <a href="#research">[He et al., "Drain," ICWS 2017]</a>.</td></tr>
+<tr><td><strong>Gap for student-scale work</strong></td><td>The cited literature evaluates parsing/anomaly-detection <em>algorithms</em> in isolation, typically on a single machine with the dataset already loaded in memory; none of the cited works package the full data-engineering path (raw text → HDFS → distributed parsing → NoSQL-backed queryable store → dashboard) as an open, containerized, reproducible artifact.</td></tr>
+<tr><td><strong>Our contribution (scoped)</strong></td><td>A reproducible, fully open, distributed ETL and descriptive-analytics pipeline over a real 211-million-line HPC log corpus, exposed through a queryable document store and dashboard, with measured (not assumed) processing-time and scalability experiments on a single student workstation.</td></tr>
+</table>
+<p class="note">This project does not claim to advance log-parsing or anomaly-detection research; it claims to be a valid, technically substantial, honestly scoped Big Data <em>engineering</em> exercise built on a scientifically established problem and a dataset of confirmed real scale.</p>
+</div>
+</section>
+
+<section id="method">
+<h2 class="section-title">5. Proposed Methodology</h2>
+<div class="card">
+<h3>End-to-end architecture</h3>
+<div class="arch">┌──────────────────────┐
+│ 1. DATA ACQUISITION   │  Zenodo mirror (loghub) → Thunderbird.tar.gz (29.6 GB)
+│    (curl/wget)        │  optional: BGL.tar.gz (0.7 GB) for comparison
+└─────────┬────────────┘
+          ▼
+┌──────────────────────┐
+│ 2. RAW STORAGE        │  Local staging → extract raw .log text file(s)
+│    (local FS)         │
+└─────────┬────────────┘
+          ▼
+┌──────────────────────┐
+│ 3. INGESTION TO HDFS  │  Split raw log into time-window chunks (e.g. weekly)
+│    (Hadoop HDFS)      │  /raw/thunderbird/YYYY-WW/part-*.log
+└─────────┬────────────┘
+          ▼
+┌──────────────────────────────┐
+│ 4. PySpark PARSING & ETL       │  Tokenize each line: timestamp, node id, label,
+│    - template mining (Drain-   │  raw message. Mask variable tokens (hex, PIDs,
+│      style masking)            │  counters). Cluster masked lines into templates.
+│    - feature extraction        │  Assign template_id to every line.
+└─────────┬────────────────────┘
+          ▼
+┌──────────────────────┐
+│ 5. PROCESSED ZONE      │  Parquet, partitioned by week/template_id
+│    (HDFS, Parquet)     │  /processed/thunderbird/week=WW/template=T/
+└─────────┬────────────┘
+          ▼
+┌───────────────────────────────┐
+│ 6. WINDOW/SEQUENCE FEATURES     │  Per-node sliding window of last N template IDs
+│    (PySpark, window functions)  │  (DeepLog-style workflow representation);
+│                                  │  per-window alert-count labels
+└─────────┬───────────────────┘
+          ▼
+┌──────────────────────┐
+│ 7. NoSQL STORAGE       │  MongoDB collections:
+│    (MongoDB)           │  - parsed_events (heterogeneous parameter fields)
+│                         │  - template_catalog (mined templates + stats)
+│                         │  - window_features (aggregated, dashboard-ready)
+└─────────┬────────────┘
+          ▼
+┌──────────────────────┐
+│ 8. QUERY/API LAYER     │  PyMongo query functions; optional thin FastAPI
+│    (FastAPI, optional) │  layer over MongoDB
+└─────────┬────────────┘
+          ▼
+┌──────────────────────┐
+│ 9. STREAMLIT DASHBOARD │  Filters: date range, node id, template/event type,
+│                         │  alert-only view; charts: alert timeline, template
+│                         │  frequency, per-node fault concentration
+└─────────┬────────────┘
+          ▼
+┌──────────────────────┐
+│ 10. DOCKER             │  docker-compose: streamlit app + mongo container
+│     (Docker Compose)   │  (Hadoop/Spark run on host or a separate service)
+└──────────────────────┘</div>
+
+<h3>Technology-to-responsibility mapping</h3>
+<table>
+<tr><th>Technology</th><th>Responsibility</th></tr>
+<tr><td>HDFS</td><td>Distributed, replicated storage of the raw 29.6 GB log (chunked by time window) and of Parquet-encoded parsed output; partitioned layout lets Spark read only relevant weeks/templates.</td></tr>
+<tr><td>PySpark (DataFrame/RDD API)</td><td>Distributed regex tokenization, template-mask clustering (Drain-style), per-node/per-window aggregation, and ordered sliding-window sequence construction across 211M+ rows.</td></tr>
+<tr><td>MongoDB</td><td>Query-oriented store for (a) parsed log-event documents whose parameter fields genuinely differ by template — a real variety need — and (b) precomputed window/alert aggregates consumed directly by the dashboard.</td></tr>
+<tr><td>FastAPI <span class="note">(optional)</span></td><td>Thin REST layer between MongoDB and Streamlit if time allows; not required for core rubric marks.</td></tr>
+<tr><td>Streamlit</td><td>Interactive dashboard: date/node/template filters, alert timeline, template-frequency chart, per-node fault-concentration view.</td></tr>
+<tr><td>Docker / Docker Compose</td><td>Reproducible packaging of the Streamlit application and MongoDB instance for identical grader-side demo behaviour.</td></tr>
+</table>
+
+<h3>NoSQL document schema (MongoDB)</h3>
+<pre>// parsed_events — one document per log line, heterogeneous parameter fields by template
+{
+  "_id": ObjectId,
+  "timestamp": "2005-11-03T12:41:07",
+  "node_id": "tbird-node137",
+  "label": "-",                 // "-" = non-alert, else an alert category code
+  "template_id": "T0047",
+  "raw_message": "ib_sm: node 137 port 2 link up rate 20 Gb/sec",
+  "parameters": {               // varies by template — genuine schema variety
+    "node": "137",
+    "port": "2",
+    "rate_gbps": "20"
+  }
+}
+
+// template_catalog — one document per mined template
+{
+  "_id": "T0047",
+  "template_string": "ib_sm: node <*> port <*> link up rate <*> Gb/sec",
+  "param_count": 3,
+  "occurrence_count": 184213,
+  "alert_occurrences": 12
+}
+
+// window_features — precomputed by Spark, read directly by dashboard
+{
+  "_id": "tbird-node137_2005-W44",
+  "node_id": "tbird-node137",
+  "week": "2005-W44",
+  "template_counts": {"T0047": 812, "T0012": 44, "T0091": 3},
+  "alert_count": 3,
+  "total_lines": 5210
+}</pre>
+
+<h3>Example Spark operations</h3>
+<pre>from pyspark.sql import functions as F, Window
+import re
+
+raw = spark.read.text("hdfs:///raw/thunderbird/*")
+
+# Tokenize: label, timestamp, node, message (Thunderbird line format)
+parsed = raw.select(
+    F.regexp_extract("value", r"^(\S+)", 1).alias("label"),
+    F.regexp_extract("value", r"^\S+\s+(\d+)", 1).alias("epoch"),
+    F.regexp_extract("value", r"(tbird-\S+)", 1).alias("node_id"),
+    F.regexp_extract("value", r"^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(.*)$", 1).alias("message")
+)
+
+# Mask variable tokens to approximate a Drain-style template signature
+masked = parsed.withColumn(
+    "template_sig",
+    F.regexp_replace(F.regexp_replace("message", r"\d+", "<*>"), r"0x[0-9a-fA-F]+", "<*>")
+)
+
+templates = masked.groupBy("template_sig").agg(F.count("*").alias("occurrence_count"))
+
+# Per-node weekly window features for anomaly-detection-style modelling
+w = Window.partitionBy("node_id").orderBy("epoch").rowsBetween(-49, 0)
+seq = masked.withColumn("recent_templates", F.collect_list("template_sig").over(w))
+</pre>
+
+<h3>Potential statistical / ML methods</h3>
+<p>Primary deliverable is descriptive analytics (template frequency, alert timelines, per-node fault concentration). As a stretch goal, a sequence-window classifier (Logistic Regression on template-count vectors, or an LSTM as in <a href="#research">DeepLog</a>) predicting whether a window contains an alert can be trained. This is explicitly optional — see MVP.</p>
+
+<h3>Performance / scalability considerations to document</h3>
+<p>Regex-parsing throughput vs. partition count; shuffle volume for the per-node ordered-window operation; effect of HDFS block size on a single large text file's parallelism; template-count skew if a handful of templates dominate the corpus.</p>
+</div>
+</section>
+
+<section id="sw">
+<h2 class="section-title">6. Software Requirements</h2>
+<div class="card">
+<table>
+<tr><th>Component</th><th>Version (indicative)</th><th>Role</th></tr>
+<tr><td>OS</td><td>Ubuntu 22.04 LTS (native or WSL2)</td><td>Stable base for Hadoop/Spark installs.</td></tr>
+<tr><td>Python</td><td>3.10 or 3.11</td><td>Runtime for PySpark driver, PyMongo client, Streamlit app.</td></tr>
+<tr><td>Java (JDK)</td><td>OpenJDK 11</td><td>Required by Hadoop and Spark JVM processes.</td></tr>
+<tr><td>Apache Hadoop</td><td>3.3.x</td><td>HDFS for distributed/replicated storage of raw and processed log data.</td></tr>
+<tr><td>Apache Spark (PySpark)</td><td>3.5.x</td><td>Distributed parsing, feature engineering, aggregation engine.</td></tr>
+<tr><td>MongoDB Community Server</td><td>7.0.x</td><td>Document store for heterogeneous parsed events and precomputed aggregates.</td></tr>
+<tr><td>PyMongo</td><td>4.x</td><td>Python client for MongoDB from the Spark driver and Streamlit app.</td></tr>
+<tr><td>Docker &amp; Docker Compose</td><td>24.x / v2</td><td>Containerizes the Streamlit app and MongoDB service.</td></tr>
+<tr><td>Streamlit</td><td>1.3x</td><td>Interactive dashboard framework.</td></tr>
+<tr><td>FastAPI + Uvicorn <span class="note">(optional)</span></td><td>0.11x</td><td>Optional thin REST layer over MongoDB.</td></tr>
+<tr><td>Python libraries</td><td>pyspark, pymongo, pandas, pyarrow, plotly/matplotlib, regex</td><td>Local data handling, Parquet I/O, charting.</td></tr>
+<tr><td>Optional: logparser (Drain3)</td><td>latest</td><td>Reference open-source Drain implementation, usable as a Spark UDF or to validate a hand-rolled masking approach.</td></tr>
+<tr><td>Dev tools</td><td>VS Code / Jupyter, Git</td><td>Development and exploratory notebooks.</td></tr>
+</table>
+<p class="note">Entire stack is open-source and free.</p>
+</div>
+</section>
+
+<section id="hw">
+<h2 class="section-title">7. Hardware Requirements</h2>
+<div class="card">
+<div class="grid2">
+<div>
+<h4>Minimum</h4>
+<div class="kv" style="grid-template-columns:120px 1fr;">
+<div>CPU</div><div>4 cores</div>
+<div>RAM</div><div>16 GB</div>
+<div>Storage</div><div>90 GB free (raw text + HDFS replicas + Parquet + Mongo)</div>
+<div>GPU</div><div>Not required</div>
+</div>
+</div>
+<div>
+<h4>Recommended (matches your hardware)</h4>
+<div class="kv" style="grid-template-columns:120px 1fr;">
+<div>CPU</div><div>8+ cores</div>
+<div>RAM</div><div>32 GB (your spec — comfortable)</div>
+<div>Storage</div><div>150 GB free SSD</div>
+<div>GPU</div><div>Unused (RTX 5070 idle — this is a CPU/text-processing/I-O bound project, not GPU-bound)</div>
+</div>
+</div>
+</div>
+<h4>Storage sizing rationale</h4>
+<p>Raw log (~29.6–30.3 GB) + HDFS replication (default factor 3, reducible to 1 in pseudo-distributed mode) + Parquet processed output (typically smaller than raw text due to columnar compression, but template/parameter expansion can offset some of that) + MongoDB data files. 150 GB free SSD is comfortable; ~90 GB is the tight floor with replication factor 1.</p>
+<h4>Single-machine pseudo-cluster adaptation</h4>
+<p>Run Hadoop in pseudo-distributed mode (single-node HDFS, <code class="mono">dfs.replication=1</code>) and Spark in local mode (<code class="mono">local[*]</code>). This is the standard, examiner-recognized way to demonstrate genuine HDFS block storage and Spark partitioned/DAG execution without a physical multi-node cluster.</p>
+</div>
+</section>
+
+<section id="mvp">
+<h2 class="section-title">8. MVP Objectives</h2>
+<div class="card">
+<div class="grid3">
+<div>
+<h4><span class="tag must">MUST HAVE</span></h4>
+<ul>
+<li>Download and verify the 29.6 GB Thunderbird log</li>
+<li>Ingest raw log into HDFS, partitioned by time window</li>
+<li>PySpark job: tokenize, mask, and mine log templates across the full corpus</li>
+<li>Write parsed events + template catalog + window aggregates to MongoDB</li>
+<li>Streamlit dashboard: date/node/template filters, alert timeline, template-frequency chart</li>
+<li>Dockerized Streamlit + MongoDB via docker-compose</li>
+<li>One measured local (pandas/regex) vs. Spark processing-time comparison</li>
+</ul>
+</div>
+<div>
+<h4><span class="tag should">SHOULD HAVE</span></h4>
+<ul>
+<li>Add BGL log (0.7 GB) for a cross-supercomputer comparative view</li>
+<li>Partition-count scalability experiment (2/4/8 partitions)</li>
+<li>Raw text vs. Parquet storage-size comparison</li>
+<li>Basic FastAPI query layer in front of MongoDB</li>
+</ul>
+</div>
+<div>
+<h4><span class="tag opt">OPTIONAL EXTENSIONS</span></h4>
+<ul>
+<li>Sequence-window classifier (Logistic Regression / small LSTM) predicting alert windows</li>
+<li>Interactive template-drill-down (raw lines behind a template)</li>
+<li>CPU/RAM utilization profiling during the Spark parsing job</li>
+<li>Multi-node Spark Standalone cluster if hardware allows</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section id="rubric">
+<h2 class="section-title">9. How It Satisfies the Rubrics</h2>
+<div class="card">
+<table>
+<tr><th>Rubric</th><th>Implementation</th><th>Evidence / Demonstration</th><th>Marks</th></tr>
+<tr><td>Problem Statement</td><td>Well-scoped structure-recovery-from-unstructured-text problem at 211M-line scale, requiring distributed parsing before any query is possible.</td><td>Report section explicitly contrasting "raw text has no schema yet" with "a SQL query assumes one already exists."</td><td>2</td></tr>
+<tr><td>Docker + NoSQL</td><td>MongoDB stores heterogeneous parsed-event documents (parameter fields differ per template) and precomputed aggregates; Streamlit + query layer fully containerized.</td><td>Live <code class="mono">docker-compose up</code> demo; MongoDB query showing two different templates with different parameter field sets; written justification for avoiding a fixed relational schema.</td><td>2</td></tr>
+<tr><td>Streamlit UI</td><td>Interactive dashboard: date/node/template/alert-only filters, alert timeline, template-frequency and per-node fault-concentration charts.</td><td>Live filtering demo producing different views without re-running Spark.</td><td>1</td></tr>
+<tr><td>Hadoop/PySpark distribution</td><td>Raw+processed log stored in HDFS; PySpark performs the full parsing/feature/aggregation pipeline across the corpus.</td><td>HDFS NameNode UI showing block distribution of the 29.6 GB file; Spark UI showing stages/tasks/partitions; measured runtime vs. partition count.</td><td>2</td></tr>
+<tr><td>Presentation + Viva</td><td>Architecture walkthrough covering HDFS block storage, Spark DAG/shuffle, log-template mining, NoSQL schema design, Docker composition.</td><td>See Viva Preparation — 15 rehearsable Q&amp;A pairs.</td><td>5</td></tr>
+<tr><td>Report</td><td>Sections: problem statement, dataset description, architecture, methodology, experiments with measured numbers, results/discussion, limitations, references.</td><td>Quantitative tables: processing time vs. partition count, template-count distribution, storage-size before/after Parquet conversion, alert-timeline findings.</td><td>3</td></tr>
+</table>
+<h4>Viva-demonstrable technical concepts this project naturally exercises</h4>
+<div class="badge-row">
+<span class="badge">HDFS block storage &amp; replication</span>
+<span class="badge">Data partitioning strategy for one large file</span>
+<span class="badge">Spark transformations vs. actions (lazy DAG)</span>
+<span class="badge">Shuffle cost in ordered window operations</span>
+<span class="badge">Serialization (raw text → Parquet)</span>
+<span class="badge">Log template mining / masking strategy</span>
+<span class="badge">NoSQL document design for variable schema</span>
+<span class="badge">Distributed vs. local text-processing trade-offs</span>
+<span class="badge">Query design / indexing in MongoDB</span>
+<span class="badge">Docker networking between app and DB containers</span>
+<span class="badge">Bottleneck identification (I/O vs. shuffle vs. regex cost)</span>
+<span class="badge">Class imbalance in alert labels</span>
+</div>
+</div>
+</section>
+
+<section id="novelty">
+<h2 class="section-title">10. Novelty</h2>
+<div class="card">
+<table>
+<tr><th>Novelty type</th><th>Assessment</th></tr>
+<tr><td>Research novelty</td><td><strong>None claimed.</strong> Log parsing and log-based anomaly detection is an active research area since at least 2007, with continuous work through 2024 <a href="https://arxiv.org/pdf/2207.03820" target="_blank">[Landauer et al. survey, 2023]</a>. This project makes no contribution to that literature.</td></tr>
+<tr><td>Engineering novelty</td><td>Moderate. A fully open, single-workstation-reproducible HDFS + PySpark + MongoDB + Streamlit + Docker pipeline over this specific 29.6 GB corpus is not something the cited papers provide as a reusable containerized artifact — most evaluate parsing/detection algorithms on pre-loaded in-memory data.</td></tr>
+<tr><td>Dataset/application novelty</td><td>Low. Thunderbird/BGL are among the most widely used benchmarks in this field; no claim of a new dataset is made.</td></tr>
+<tr><td>Analytical novelty</td><td>Small but credible: a measured local-vs-distributed parsing-time comparison and partition-count scaling study on this specific 211M-line corpus, plus (if BGL is added) a cross-supercomputer comparison of template diversity and alert concentration, reported with real measured numbers.</td></tr>
+<tr><td>Educational/project-level novelty</td><td>High relative to typical mini-project submissions: the schema-variety property of parsed log events is genuine, not manufactured to satisfy a rubric, and the dataset's true size already matches the assignment's target band without any subsetting step — a cleaner and more defensible design than most student projects in this space.</td></tr>
+</table>
+<p><strong>Honest framing for the report:</strong> "This project is primarily an engineering and applied-analytics implementation, not original research. Its distinguishing contribution is a reproducible, fully open-source distributed pipeline and a measured performance/scalability study on a real, full-scale HPC log corpus." Avoid "novel," "first," or "state-of-the-art" claims about the underlying problem.</p>
+</div>
+</section>
+
+<section id="exp">
+<h2 class="section-title">Experimental Design</h2>
+<div class="card">
+<table>
+<tr><th>Experiment</th><th>Variables</th><th>Metric</th><th>Baseline</th><th>Expected observation (planned, not pre-empted)</th></tr>
+<tr><td>Local vs. distributed parsing time</td><td>Engine: single-process Python/regex vs. PySpark (local[*])</td><td>Wall-clock time over identical subsets (1 GB, 5 GB, 15 GB, full 29.6 GB)</td><td>Single-process Python line-by-line regex parse</td><td>PySpark's relative advantage should grow with data size; at very small subsets, Spark session/startup overhead may make it slower — this crossover is itself a reportable finding.</td></tr>
+<tr><td>Partition-count scaling</td><td>Spark partition count: 2, 4, 8, 16</td><td>Job runtime, shuffle read/write bytes (Spark UI)</td><td>Default partition count</td><td>Runtime should decrease then plateau or worsen past available cores due to scheduling overhead.</td></tr>
+<tr><td>Storage compression</td><td>Format: raw text vs. Parquet (Snappy)</td><td>On-disk size, read latency for a representative query</td><td>Raw text size</td><td>Parquet expected to reduce size and speed up column-selective scans; magnitude to be measured.</td></tr>
+<tr><td>Query latency</td><td>Source: MongoDB precomputed window_features vs. re-running Spark aggregation on demand</td><td>Response time for a dashboard filter action</td><td>Live Spark re-aggregation</td><td>MongoDB-served precomputed aggregates should respond in milliseconds vs. seconds-to-minutes for live Spark recomputation.</td></tr>
+<tr><td>Resource utilization</td><td>CPU%/RAM during the parsing job (htop / Spark executors tab)</td><td>Peak/average CPU and RAM usage</td><td>Idle baseline</td><td>Measured and reported as time-series plots; no result assumed in advance.</td></tr>
+<tr><td>(Optional) Cross-system template comparison</td><td>Corpus: Thunderbird vs. BGL</td><td>Number of distinct templates, alert-to-template ratio</td><td>N/A (descriptive comparison)</td><td>Different HPC systems may show different template diversity and alert concentration; to be reported as an observation, not assumed.</td></tr>
+<tr><td>(Optional) Alert-window classification</td><td>Model: Logistic Regression on template-count vectors vs. majority-class baseline</td><td>Precision/Recall/F1/MCC on held-out time period</td><td>Always-predict-"no alert" majority classifier</td><td>Given severe class imbalance, F1/MCC are the meaningful metrics; raw accuracy will be misleadingly high for the trivial baseline — to be discussed explicitly.</td></tr>
+</table>
+<p class="note">All numeric results in the final report must be values actually measured on the student's own run — the table above defines the experiment design only, not results.</p>
+</div>
+</section>
+
+<section id="dataset">
+<h2 class="section-title">Dataset Plan</h2>
+<div class="card">
+<table>
+<tr><th>Dataset</th><th>Source</th><th>Size</th><th>Format</th><th>Domain</th><th>Accessibility</th><th>Big Data suitability</th><th>Processing difficulty</th></tr>
+<tr>
+<td><strong>Thunderbird supercomputer log</strong> (primary, selected)</td>
+<td><a href="https://github.com/logpai/loghub" target="_blank">github.com/logpai/loghub</a> (data hosted on Zenodo)</td>
+<td><strong>29.60 GB</strong>, 211,212,192 lines, 244 days <a href="https://arxiv.org/pdf/2008.06448" target="_blank">[Loghub]</a></td>
+<td>Raw free-text console/syslog, one line per record</td>
+<td>HPC / supercomputer systems telemetry</td>
+<td>Direct download from Zenodo mirror, open research licence, no registration</td>
+<td>High — 211M unstructured records, real schema heterogeneity, alert labels present</td>
+<td>Medium-high — template mining/masking required before structured analysis</td>
+</tr>
+<tr>
+<td><strong>BGL log</strong> (optional add-on, selected as extension)</td>
+<td><a href="https://github.com/logpai/loghub" target="_blank">github.com/logpai/loghub</a></td>
+<td>708.76 MB, 4,747,963 lines, 214.7 days <a href="https://github.com/logpai/loghub" target="_blank">[Loghub]</a></td>
+<td>Raw free-text console log</td>
+<td>HPC / supercomputer systems telemetry (Blue Gene/L, LLNL)</td>
+<td>Direct download, same licence family</td>
+<td>Medium alone; adds cross-system comparison value combined with Thunderbird</td>
+<td>Medium — same parsing approach as Thunderbird</td>
+</tr>
+<tr>
+<td>Backblaze Drive Stats (alternative, not selected this revision)</td>
+<td><a href="https://www.backblaze.com/cloud-storage/resources/hard-drive-test-data" target="_blank">backblaze.com</a></td>
+<td>~21 GB compressed / ~128 GB uncompressed, full archive <a href="https://discuss.huggingface.co/t/drive-stats-data-set-upload-files-to-dataset-repo-or-link-to-them/56054" target="_blank">[HF/Backblaze]</a></td>
+<td>CSV, structured with variable columns</td>
+<td>Storage systems reliability</td>
+<td>Direct HTTPS/B2 download</td>
+<td>High, but requires a deliberate year-range subsetting decision to land inside 10–40 GB</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Windows Event Log (alternative)</td>
+<td><a href="https://github.com/logpai/loghub" target="_blank">Loghub</a></td>
+<td>26.09 GB, 114,608,388 messages</td>
+<td>Raw text</td>
+<td>Desktop/server OS event log</td>
+<td>Direct download</td>
+<td>High</td>
+<td>Medium</td>
+</tr>
+</table>
+<h4>No subsetting required</h4>
+<p>The Thunderbird log's full, undivided size (29.60 GB) already sits inside the 10–40 GB requirement. No sampling, truncation, or multi-year selection is needed. The optional BGL addition (708.76 MB) is for analytical breadth (cross-system comparison), not for reaching a size target — the combined 30.3 GB remains well inside the required band. This should be stated plainly in the report's dataset section to avoid any ambiguity about dataset scale.</p>
+</div>
+</section>
+
+<section id="research">
+<h2 class="section-title">Research Foundation</h2>
+<div class="card">
+<table>
+<tr><th>Paper / Source</th><th>Year</th><th>Venue / Org</th><th>Relevant contribution</th><th>How it informs our project</th></tr>
+<tr>
+<td><a href="http://ieeexplore.ieee.org/document/4273008/" target="_blank">Oliner &amp; Stearley — "What Supercomputers Say: A Study of Five System Logs"</a></td>
+<td>2007</td>
+<td>IEEE/IFIP DSN</td>
+<td>Foundational large-scale study of supercomputer console logs (including systems in the Thunderbird/BGL family), establishing that fault-relevant signal exists in raw system logs.</td>
+<td>Establishes that the underlying scientific/engineering problem (recovering fault signal from raw HPC logs) is real and has a 15+ year lineage; grounds our alert-timeline framing.</td>
+</tr>
+<tr>
+<td><a href="https://www.sigops.org/sosp/sosp09/papers/xu-sosp09.pdf" target="_blank">Xu, Huang, Fox, Patterson, Jordan — "Detecting Large-Scale System Problems by Mining Console Logs"</a></td>
+<td>2009</td>
+<td>ACM SOSP</td>
+<td>Established structured log-template mining as a viable approach to system-problem detection in production distributed systems.</td>
+<td>Directly informs our template-mining/masking approach as the first stage of the pipeline.</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/pdf/2008.06448" target="_blank">He, Zhu, He, Lyu — "Loghub: A Large Collection of System Log Datasets for AI-driven Log Analytics"</a></td>
+<td>2020 (arXiv) / 2023 (ISSRE)</td>
+<td>arXiv / IEEE ISSRE</td>
+<td>Documents and hosts the Thunderbird, BGL, and related log datasets with precise size/line-count statistics used throughout this proposal.</td>
+<td>Primary source for all dataset-scale figures cited in this document (29.60 GB, 211,212,192 lines, etc.).</td>
+</tr>
+<tr>
+<td>Du, Li, Zheng, Srikumar — "DeepLog: Anomaly Detection and Diagnosis from System Logs through Deep Learning"</td>
+<td>2017</td>
+<td>ACM CCS</td>
+<td>Introduced sequence/workflow modelling of parsed log-template streams (sliding windows of template IDs) for anomaly detection.</td>
+<td>Directly informs our optional sequence-window feature design and stretch-goal classifier.</td>
+</tr>
+<tr>
+<td>He, Zhu, He, Lyu — "Drain: An Online Log Parsing Approach with Fixed Depth Tree"</td>
+<td>2017</td>
+<td>IEEE ICWS</td>
+<td>Introduced the fixed-depth-tree online log parsing algorithm now standard in this field.</td>
+<td>Our masking-based template extraction approximates Drain's approach; students may optionally use the open-source Drain3 implementation directly.</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/pdf/2207.03820" target="_blank">Landauer, Onder, Skopik, Wurzenberger — "Deep Learning for Anomaly Detection in Log Data: A Survey"</a></td>
+<td>2023</td>
+<td>Machine Learning with Applications (journal)</td>
+<td>Recent systematic survey confirming this remains an active research area, taxonomising deep-learning approaches to log anomaly detection.</td>
+<td>Confirms recency of the research area (assignment's 2022–2026 preference) and situates our optional stretch-goal classifier within a recognized taxonomy.</td>
+</tr>
+<tr>
+<td><a href="https://ceur-ws.org/Vol-3885/paper21.pdf" target="_blank">Juknys — "Anomaly Detection for System Logs Literature Overview"</a></td>
+<td>2023</td>
+<td>CEUR-WS (literature review)</td>
+<td>Reviews 80 papers (2018–2023) and confirms HDFS, BGL, and Thunderbird are the most commonly used benchmark datasets in this field.</td>
+<td>Directly justifies our dataset choice as aligned with mainstream, actively used benchmarks in current research.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/logpai/loghub" target="_blank">Loghub — official dataset repository (logpai)</a></td>
+<td>Ongoing</td>
+<td>logpai / GitHub + Zenodo</td>
+<td>Official hosting, licensing terms, and per-dataset statistics table.</td>
+<td>Primary source for download links and size verification at execution time.</td>
+</tr>
+</table>
+</div>
+</section>
+
+<section id="plan">
+<h2 class="section-title">Implementation Plan</h2>
+<div class="card">
+<table>
+<tr><th>Phase</th><th>Deliverables</th><th>Technologies</th><th>Difficulty</th><th>Depends on</th></tr>
+<tr><td>1. Dataset acquisition</td><td>Thunderbird.tar.gz (and optionally BGL.tar.gz) downloaded and verified</td><td>curl/wget, checksum verification</td><td>Low</td><td>—</td></tr>
+<tr><td>2. HDFS setup</td><td>Pseudo-distributed HDFS running; NameNode UI accessible</td><td>Hadoop 3.3.x</td><td>Medium (config-heavy)</td><td>Phase 1</td></tr>
+<tr><td>3. Data ingestion</td><td>Raw log chunked by time window and loaded into HDFS</td><td>hdfs dfs -put, shell scripts</td><td>Low-Medium</td><td>Phase 2</td></tr>
+<tr><td>4. PySpark parsing/ETL</td><td>Tokenized, masked, template-mined dataset; Parquet output</td><td>PySpark 3.5.x, regex</td><td>High (core technical work)</td><td>Phase 3</td></tr>
+<tr><td>5. NoSQL integration</td><td>MongoDB collections populated (parsed_events, template_catalog, window_features)</td><td>MongoDB, PyMongo</td><td>Medium</td><td>Phase 4</td></tr>
+<tr><td>6. API/application layer</td><td>Query functions (and optional FastAPI endpoints) over MongoDB</td><td>PyMongo, FastAPI (optional)</td><td>Low-Medium</td><td>Phase 5</td></tr>
+<tr><td>7. Dockerization</td><td>docker-compose.yml running Streamlit + MongoDB together</td><td>Docker, Docker Compose</td><td>Medium (networking)</td><td>Phase 5/6</td></tr>
+<tr><td>8. Streamlit dashboard</td><td>Filterable, multi-chart dashboard connected to MongoDB</td><td>Streamlit, Plotly/Matplotlib</td><td>Medium</td><td>Phase 5</td></tr>
+<tr><td>9. Experiments</td><td>Measured results for all Experimental Design items</td><td>Spark UI, htop, timing scripts</td><td>Medium</td><td>Phase 4, 7, 8</td></tr>
+<tr><td>10. Report &amp; viva prep</td><td>Final report document; rehearsed answers to viva question bank</td><td>—</td><td>Low-Medium</td><td>All prior phases</td></tr>
+</table>
+<p class="note">Suggested pacing for a 7–10 day timeline: Days 1–2 phases 1–3; Days 3–5 phase 4 (largest single block, parsing 211M lines correctly); Day 6 phases 5–6; Day 7 phases 7–8; Day 8 phase 9; Days 9–10 phase 10 and buffer.</p>
+</div>
+</section>
+
+<section id="viva">
+<h2 class="section-title">Viva Preparation</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>Question</th><th>What is being tested</th><th>Key points to answer</th></tr>
+<tr><td>1</td><td>Why is this a Big Data problem and not a text-search problem?</td><td>Conceptual understanding of when distributed processing is justified</td><td>211M unstructured lines with no fixed schema; template mining and per-node ordered windowing are computation, not lookup, and scale by partition rather than by index size.</td></tr>
+<tr><td>2</td><td>Why HDFS instead of reading the 29.6 GB file directly from local disk?</td><td>Understanding of distributed storage benefits</td><td>Block-level replication for fault tolerance, data locality for Spark task scheduling; the demo runs pseudo-distributed but the same architecture scales to real multi-node clusters.</td></tr>
+<tr><td>3</td><td>Explain transformations vs. actions in your parsing job.</td><td>Core Spark execution model</td><td>regexp_extract/withColumn are lazy transformations forming a DAG; write()/count() are actions that trigger execution; affects when errors surface.</td></tr>
+<tr><td>4</td><td>Where does a shuffle occur in your pipeline, and why is it costly?</td><td>Understanding of Spark's costliest operation</td><td>The per-node ordered sliding-window operation requires repartitioning by node_id and sorting by timestamp; visible in Spark UI's shuffle read/write metrics.</td></tr>
+<tr><td>5</td><td>What is a "log template" and how did you mine it?</td><td>Understanding of the core parsing technique</td><td>A template is the invariant shape of a message with variable tokens masked out (numbers, hex addresses); we mask variable tokens via regex and group identical masked strings, approximating the Drain algorithm.</td></tr>
+<tr><td>6</td><td>Why did you choose MongoDB instead of a relational database?</td><td>Justification of NoSQL choice, not just compliance</td><td>Different templates have different parameter field sets (node/port/rate for one template, PID/signal for another) — a fixed relational schema would require sparse nulls or constant migration; documents naturally accommodate this.</td></tr>
+<tr><td>7</td><td>Show me two parsed_events documents from different templates with different fields.</td><td>Concrete proof the NoSQL use is genuine</td><td>Live query pulling two documents whose "parameters" subdocuments have different key sets.</td></tr>
+<tr><td>8</td><td>How does Docker help this project's reproducibility?</td><td>Understanding containerization's purpose</td><td>Freezes dependency versions (Streamlit, MongoDB, PyMongo) so the demo runs identically on any grading machine.</td></tr>
+<tr><td>9</td><td>How do your Docker containers communicate?</td><td>Docker networking basics</td><td>Docker Compose default bridge network; service-name DNS resolution (e.g., <code class="mono">mongodb://mongo:27017</code>) instead of localhost.</td></tr>
+<tr><td>10</td><td>What happens if a HDFS DataNode fails mid-job?</td><td>Fault tolerance understanding</td><td>Block replication lets the NameNode redirect to surviving replicas; Spark can also recompute lost partitions from RDD lineage without needing replication at all.</td></tr>
+<tr><td>11</td><td>Why is alert-window classification accuracy potentially misleading?</td><td>Understanding of class imbalance</td><td>Alert lines are a small fraction of total lines; a trivial "always predict no-alert" model scores very high raw accuracy; F1/recall/MCC on the minority class are the meaningful metrics.</td></tr>
+<tr><td>12</td><td>How did processing time scale with partition count in your experiment?</td><td>Ability to interpret one's own measured results</td><td>Student must state actual measured numbers and explain any plateau/regression relative to available cores.</td></tr>
+<tr><td>13</td><td>What would you change if the log were 10× larger?</td><td>Scalability reasoning beyond the demo scale</td><td>Move to a real multi-node cluster, increase HDFS replication, tune Spark executor memory/cores, consider incremental (append-only) template mining instead of full reprocessing.</td></tr>
+<tr><td>14</td><td>Why didn't you use Kafka or a streaming framework?</td><td>Understanding of batch vs. streaming Big Data problems</td><td>The Thunderbird log is a historical batch archive, not a live event stream; this is legitimately a batch problem, and forcing streaming tooling would be architecturally dishonest.</td></tr>
+<tr><td>15</td><td>What is the single biggest technical risk in this project and how did you mitigate it?</td><td>Self-awareness of project weaknesses</td><td>Student should reference the Risks &amp; Mitigations section — e.g., template-mining false-merging of distinct messages, mitigated by validating a sample of masked templates by hand.</td></tr>
+</table>
+</div>
+</section>
+
+<section id="risk">
+<h2 class="section-title">Risks and Mitigations</h2>
+<div class="card">
+<table>
+<tr><th>Risk</th><th>Mitigation</th></tr>
+<tr><td>Download/extraction of a 29.6 GB archive is slow or interrupted</td><td>Use resumable download (<code class="mono">curl -C -</code>); start acquisition on Day 1; verify with provided checksums if available.</td></tr>
+<tr><td>HDFS configuration problems on first setup</td><td>Use pseudo-distributed single-node mode with replication factor 1; follow the official Hadoop single-node guide exactly; keep a Docker-based Hadoop image as a fallback.</td></tr>
+<tr><td>Spark memory pressure / OOM on 32 GB RAM during full-corpus parsing</td><td>Tune <code class="mono">spark.executor.memory</code>/<code class="mono">spark.driver.memory</code> conservatively; process in time-window chunks rather than the whole 211M lines at once during development; prototype logic on a 1 GB slice first.</td></tr>
+<tr><td>Naive template-masking over- or under-merges distinct message types</td><td>Manually inspect a sample of ~50 mined templates against raw lines to sanity-check; adjust masking regex granularity (e.g., separate hex vs. decimal tokens) if merging looks wrong; document known limitations honestly in the report.</td></tr>
+<tr><td>Long preprocessing times eating into the one-week schedule</td><td>Prototype the Spark job on a small slice first (fast iteration), then scale to the full 29.6 GB only once correct; cache intermediate DataFrames where reused.</td></tr>
+<tr><td>NoSQL schema issues (inconsistent parameter fields breaking queries)</td><td>Store extracted parameters inside a nested subdocument (<code class="mono">parameters: {...}</code>) rather than flattening to top-level fields, so differing field sets never break document structure.</td></tr>
+<tr><td>Docker networking failures between app and MongoDB containers</td><td>Use Docker Compose (not standalone `docker run`) so service-name DNS resolution works automatically.</td></tr>
+<tr><td>Severe class imbalance in alert labels weakens the optional classifier</td><td>Report F1/MCC/recall rather than accuracy; treat the classifier as a clearly-labelled optional stretch goal, not a core deliverable.</td></tr>
+<tr><td>Streamlit UI performance with large aggregate tables</td><td>Never query raw HDFS/Parquet directly from Streamlit; always read precomputed MongoDB aggregates so UI response time is independent of underlying data volume.</td></tr>
+</table>
+</div>
+</section>
+
+<section id="final">
+<h2 class="section-title">Final Feasibility Assessment</h2>
+<div class="card">
+<div class="kv">
+<div>Why this fits Big Data Analytics</div><div>211-million-line, 29.6 GB unstructured corpus with real cross-subsystem schema heterogeneity; structure must be recovered through distributed parsing before any query is meaningful.</div>
+<div>Core technical challenge</div><div>Mining a consistent, correctly-granular set of log templates from free text at scale, without either over-merging distinct fault types or exploding the template count.</div>
+<div>Most difficult implementation component</div><div>The PySpark parsing/template-mining stage (Phase 4) — correct, validated masking logic applied consistently across 211 million lines.</div>
+<div>Most important viva demonstration</div><div>Live proof that parsed events genuinely have heterogeneous fields across templates (two real MongoDB documents with different parameter keys) plus a Spark UI walkthrough of partitions/DAG/shuffle for the parsing job.</div>
+<div>Minimum dataset size for a convincing demonstration</div><div>The full 29.6 GB Thunderbird log is itself the minimum meaningful unit here — it is not being subsetted, so this question is answered by the dataset's own natural scale.</div>
+<div>Minimum viable technical stack</div><div>Pseudo-distributed HDFS + PySpark (local mode) + MongoDB + Streamlit + Docker Compose — no multi-node cluster, no FastAPI, no ML classifier required for full rubric coverage.</div>
+<div>What should NOT be implemented</div><div>A real-time streaming layer (Kafka/Spark Streaming) — the data is a historical batch archive, not a stream; a multi-node physical cluster — unnecessary given pseudo-distributed mode satisfies the Hadoop/PySpark rubric; a deep LSTM anomaly model — GPU is unused by design and adds risk without required marks; do not attempt to reproduce any published paper's accuracy numbers as a target.</div>
+</div>
+</div>
+</section>
+
+<footer>
+Prepared as an internal project-planning document. All dataset figures and cited papers are drawn from the sources linked inline. Dataset size (29.60 GB, 211,212,192 lines) is sourced directly from the Loghub project's own published statistics table and should be re-confirmed against the current GitHub/Zenodo listing at download time.
+</footer>
+
+</div>
+</body>
+</html>

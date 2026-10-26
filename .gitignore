@@ -1,0 +1,107 @@
+# =============================================================================
+# Python
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.installed.cfg
+
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+
+# =============================================================================
+# Backup & Temporary Files
+# =============================================================================
+*.bak
+*.bak2
+*.bak3
+*.tmp
+*.swp
+*.swo
+*~
+
+# =============================================================================
+# Log Files
+# =============================================================================
+*.log
+full_run*.log
+
+# =============================================================================
+# Large Data Files (Chunks / Raw Logs)
+# =============================================================================
+# Weekly Apache/server log chunks — too large for git
+chunks/
+
+# =============================================================================
+# Hadoop / Spark Output Files
+# =============================================================================
+# Spark part files and CRC checksums
+mongo_export/**/part-*.json
+mongo_export/**/.part-*.json.crc
+mongo_export/**/_SUCCESS
+mongo_export/**/._SUCCESS.crc
+
+# General Hadoop/Spark output patterns
+part-*.json
+*.crc
+_SUCCESS
+._SUCCESS.crc
+_temporary/
+
+# HDFS local data directories (datanode / namenode volumes)
+hdfs/datanode/
+hdfs/namenode/
+
+# =============================================================================
+# MongoDB Exports (large generated data)
+# =============================================================================
+# Uncomment the line below if you want to exclude ALL mongo_export data.
+# mongo_export/
+
+# =============================================================================
+# Thunderbird (accidental large files)
+# =============================================================================
+Thunderbird.log
+Thunderbird.tar.gz
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.zip
+
+# =============================================================================
+# Run Summary / Output JSON artefacts
+# =============================================================================
+run_summary_*.json
+
+# =============================================================================
+# Jupyter Notebooks (checkpoints)
+# =============================================================================
+.ipynb_checkpoints/
+*.ipynb
+
+# =============================================================================
+# IDEs & Editors
+# =============================================================================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# =============================================================================
+# OS / System Files
+# =============================================================================
+.DS_Store
+Thumbs.db
+desktop.ini
